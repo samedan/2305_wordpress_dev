@@ -19,6 +19,9 @@
  // Add Title Tag
 function university_features() {
   add_theme_support('title-tag');
+  register_nav_menu('headerMenuLocation', 'Header Menu Location');
+  register_nav_menu('footerLocationOne', 'Footer Location One');
+  register_nav_menu('footerLocationTwo', 'Footer Location Two');
 }
 
 
@@ -28,5 +31,7 @@ function university_features() {
  // load file = wp_enqueue_scripts
  add_action('wp_enqueue_scripts', 'university_files');
 
- // generate META Title tag
+ // generate META Title tag & MENU
  add_action('after_setup_theme', 'university_features');
+
+ 
