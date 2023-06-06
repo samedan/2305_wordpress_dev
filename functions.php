@@ -25,6 +25,8 @@ function university_features() {
 }
 
 
+
+
 ///////////////
 // NAME FUNCTIONS
 
@@ -34,4 +36,3 @@ function university_features() {
  // generate META Title tag & MENU
  add_action('after_setup_theme', 'university_features');
 
- 
