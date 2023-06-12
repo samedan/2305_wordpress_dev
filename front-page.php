@@ -21,10 +21,23 @@
           <h2 class="headline headline--small-plus t-center">Upcoming Events</h2>
           
           <?php
+            $today = date('Ymd');
             
             $homepageEvents = new WP_Query(array(
-              'posts_per_page'=> 2,
-              'post_type' => 'event', // what data to query from teh DBB
+              'posts_per_page'=> -1, // "-1" = all posts that meat the query
+              'post_type' => 'event', // what data to query from teh DBB = Event
+              'meta_key' => 'event_date', // custom field = 'event_date_num'
+              'orderby' => 'meta_value_num', // 'meta_value' meta or custom field              
+              'order' => 'ASC',
+              'meta_query' => array(
+                array( // only give events in the future
+                  'key' => 'event_date',
+                  'compare' => '>=',
+                  'value' => $today,
+                  'type' => 'numeric' // date is a numeric type
+                ),
+                // array(), another sets of rules 
+              )
             ));
 
             while($homepageEvents->have_posts()) {
