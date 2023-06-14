@@ -24,7 +24,29 @@ function university_features() {
   register_nav_menu('footerLocationTwo', 'Footer Location Two');
 }
 
-
+// Pass queries for the Events page (archive-event)
+function university_adjust_queries($query) {
+  $today = date('Ymd');
+  if(
+    // only if not in the backend
+    !is_admin() AND 
+    // only on the '/events' page
+    is_post_type_archive('event') AND 
+    // it won't work on Custom Query, only main query (the default URL query)
+    $query->is_main_query()
+    ) {
+    $query->set('meta_key', 'event_date'); // custom field = 'event_date_num'
+    $query->set('orderby', 'meta_value_num'); // 'meta_value' meta or custom field      
+    $query->set('order', 'ASC'); // date of the event
+    $query->set('meta_query', array(
+      array( // only give events in the future
+        'key' => 'event_date',
+        'compare' => '>=',
+        'value' => $today,
+        'type' => 'numeric' // date is a numeric type
+      ))); // 'meta_value' meta or custom field      
+  }  
+}
 
 
 ///////////////
@@ -36,3 +58,5 @@ function university_features() {
  // generate META Title tag & MENU
  add_action('after_setup_theme', 'university_features');
 
+ // pass queries before reading the DBB
+ add_action('pre_get_posts', 'university_adjust_queries');

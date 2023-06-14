@@ -24,7 +24,7 @@
             $today = date('Ymd');
             
             $homepageEvents = new WP_Query(array(
-              'posts_per_page'=> -1, // "-1" = all posts that meat the query
+              'posts_per_page'=> 2, // "-1" = all posts that meat the query
               'post_type' => 'event', // what data to query from teh DBB = Event
               'meta_key' => 'event_date', // custom field = 'event_date_num'
               'orderby' => 'meta_value_num', // 'meta_value' meta or custom field              
