@@ -26,15 +26,30 @@ function university_features() {
 
 // Pass queries for the Events page (archive-event)
 function university_adjust_queries($query) {
-  $today = date('Ymd');
+  
+
+  if( // only if not in the backend
+    !is_admin() AND 
+    // only on the '/programs' page
+    is_post_type_archive('program') AND
+    // it won't work on Custom Query, only main query (the default URL query)
+    is_main_query()
+    ) {
+      // Order alphabetically
+      $query->set('orderby', 'title');
+      $query->set('order', 'ASC');
+      $query->set('posts_per_page', -1);
+    }
+
   if(
     // only if not in the backend
     !is_admin() AND 
     // only on the '/events' page
     is_post_type_archive('event') AND 
     // it won't work on Custom Query, only main query (the default URL query)
-    $query->is_main_query()
+    is_main_query()
     ) {
+    $today = date('Ymd');
     $query->set('meta_key', 'event_date'); // custom field = 'event_date_num'
     $query->set('orderby', 'meta_value_num'); // 'meta_value' meta or custom field      
     $query->set('order', 'ASC'); // date of the event
