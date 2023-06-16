@@ -3,6 +3,8 @@
 
 // Create Event Custom type
 function university_post_types() {
+
+  // EVENT post type
   register_post_type('event', array(
     'show_in_rest' => true,
     'supports' => array('title', 'editor', 'excerpt'),
@@ -19,7 +21,8 @@ function university_post_types() {
     ),
     'menu_icon' => 'dashicons-calendar'
   ));
-  // create Program Custp type
+
+  // create PROGRAM Custom type
   register_post_type('program', array(
     'show_in_rest' => true,
     'supports' => array('title', 'editor'),
@@ -35,6 +38,22 @@ function university_post_types() {
       'singular_name' => 'Program',
     ),
     'menu_icon' => 'dashicons-awards'
+  ));
+
+  // create PROFRESSOR Custom type
+  register_post_type('professor', array(
+    'show_in_rest' => true,
+    'supports' => array('title', 'editor'),
+    'public' => true,
+    'show_in_rest' => true,
+    'labels' => array(
+      'name' => 'Professors',
+      'add_new_item' => 'Add New Professor',
+      'edit_item' => 'Edit Professor',
+      'all_items' => 'All Professors',
+      'singular_name' => 'Professor',
+    ),
+    'menu_icon' => 'dashicons-welcome-learn-more'
   ));
 }
 
