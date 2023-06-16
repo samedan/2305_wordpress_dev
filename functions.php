@@ -19,6 +19,17 @@
  // Add Title Tag
 function university_features() {
   add_theme_support('title-tag');
+  add_theme_support('post-thumbnails'); // ALLow images on post
+  add_image_size('professorLandscape', 
+    400, 
+    260, 
+    true // crop or not in center
+  );
+  add_image_size('professorPortrait', 
+    480, 
+    650, 
+    true // crop or not in center
+  );
   register_nav_menu('headerMenuLocation', 'Header Menu Location');
   register_nav_menu('footerLocationOne', 'Footer Location One');
   register_nav_menu('footerLocationTwo', 'Footer Location Two');
