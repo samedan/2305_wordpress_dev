@@ -3,6 +3,39 @@
 ///////////////
 // FUNCTIONS
 
+// Page BANNER
+function pageBanner($args = NULL) { // $args is optional
+    if(!$args['title']) { // only if title is not passed
+      $args['title'] = get_the_title();
+    } 
+    if(!$args['subtitle']) {
+      $args['subtitle'] = get_field('page_banner_subtitle');
+    }
+    if(!$args['photo']) {
+      if(get_field('page_banner_background_image')) {
+        $args['photo'] = get_field('page_banner_background_image')['sizes']['pageBanner'];
+      } else {
+        $args['photo'] = get_theme_file_uri('/images/ocean.jpg');
+      }      
+    }
+    ?>
+      <div class="page-banner">
+      <!-- BACKGROUND Banner Image -->
+      <div class="page-banner__bg-image" style="background-image: url(
+        <?php 
+          echo $args['photo'];
+        ?>)"></div>
+      <div class="page-banner__content container container--narrow">
+        <h1 class="page-banner__title"><?php echo $args['title']  ?></h1>
+        <div class="page-banner__intro">
+          <p><?php echo $args['subtitle'] ?></p>
+        </div>
+      </div>
+    </div>
+
+    <?php 
+}
+
 // Add files
  function university_files() {
    // load Javascript
@@ -28,6 +61,11 @@ function university_features() {
   add_image_size('professorPortrait', 
     480, 
     650, 
+    true // crop or not in center
+  );
+  add_image_size('pageBanner', // Page BANNER
+    1500, 
+    350, 
     true // crop or not in center
   );
   register_nav_menu('headerMenuLocation', 'Header Menu Location');
