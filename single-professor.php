@@ -6,8 +6,6 @@ test
   while(have_posts()) {
       // the current post
       the_post(); 
-      
-      
       pageBanner();
       ?>
 

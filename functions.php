@@ -5,18 +5,18 @@
 
 // Page BANNER
 function pageBanner($args = NULL) { // $args is optional
-    if(!$args['title']) { // only if title is not passed
+    if(!isset($args['title'])) { // only if title is not passed
       $args['title'] = get_the_title();
     } 
-    if(!$args['subtitle']) {
+    if(!isset($args['subtitle'])) {
       $args['subtitle'] = get_field('page_banner_subtitle');
     }
-    if(!$args['photo']) {
-      if(get_field('page_banner_background_image')) {
+    if (!isset($args['photo'])) {
+      if (get_field('page_banner_background_image') AND !is_archive() AND !is_home() ) {
         $args['photo'] = get_field('page_banner_background_image')['sizes']['pageBanner'];
       } else {
         $args['photo'] = get_theme_file_uri('/images/ocean.jpg');
-      }      
+      }
     }
     ?>
       <div class="page-banner">
