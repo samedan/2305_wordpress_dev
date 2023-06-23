@@ -4,6 +4,24 @@
 // Create Event Custom type
 function university_post_types() {
 
+  // CAMPUS post type
+  register_post_type('campus', array(
+    'show_in_rest' => true,
+    'supports' => array('title', 'editor', 'excerpt'),
+    'rewrite' => array('slug' => 'campuses'),
+    'has_archive' => true,
+    'public' => true,
+    'show_in_rest' => true,
+    'labels' => array(
+      'name' => 'Campuses',
+      'add_new_item' => 'Add New Campus',
+      'edit_item' => 'Edit Campus',
+      'all_items' => 'All Campuses',
+      'singular_name' => 'Event',
+    ),
+    'menu_icon' => 'dashicons-location-alt'
+  ));
+
   // EVENT post type
   register_post_type('event', array(
     'show_in_rest' => true,

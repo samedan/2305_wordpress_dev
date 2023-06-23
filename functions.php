@@ -124,3 +124,7 @@ function university_adjust_queries($query) {
 
  // pass queries before reading the DBB
  add_action('pre_get_posts', 'university_adjust_queries');
+
+
+// wp_enqueue_style('leaflet-map-css', '//unpkg.com/leaflet@1.8.0/dist/leaflet.css');
+// wp_enqueue_script('leaflet-map-js', '//unpkg.com/leaflet@1.8.0/dist/leaflet.js',NULL,'1.8.0', false); 
