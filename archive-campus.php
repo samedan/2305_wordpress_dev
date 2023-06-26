@@ -31,7 +31,7 @@ $map_location = get_field('map_location');
             while(have_posts()) {
                 the_post();
                 $map_location_post = get_field('map_location');
-                print_r($map_location_post);
+                // print_r($map_location_post);
                 ?>
                 <script>
                   var marker = L.marker([
@@ -48,7 +48,7 @@ $map_location = get_field('map_location');
                
               </div> 
               <h3><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
-                  <?php echo $map_location_post['address'] ?>
+                  <!-- <?php echo $map_location_post['address'] ?> -->
         <?php } ?>
                     <script>
         var map = L.map('map').setView([44.6499282, 22.6327532], 14);

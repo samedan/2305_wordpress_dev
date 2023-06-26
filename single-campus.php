@@ -30,11 +30,12 @@
                 
                 
 
-                <?php print_r($map_location); ?><br>
-                <?php var_dump($map_location); ?><br>
-                <?php echo $map_location['markers'][0]['lng']; ?><br>
-                <?php echo $map_location['markers'][0]['lat']; ?><br>
-                <?php echo $map_location['address'] ?>
+                <!-- <?php print_r($map_location); ?><br> -->
+                <!-- <?php var_dump($map_location); ?><br> -->
+                <!-- <?php echo $map_location['markers'][0]['lng']; ?><br> -->
+
+                <!-- <?php echo $map_location['markers'][0]['lat']; ?><br> -->
+                <!-- <?php echo $map_location['address'] ?> --> 
                 <div id="map"></div>
                    <style>
 
@@ -55,22 +56,65 @@
                         var marker = L.marker([
                                 <?php echo $map_location['markers'][0]['lat']; ?>,
                                 <?php echo $map_location['markers'][0]['lng']; ?>
-                            ]).addTo(map);
+                            ]).addTo(map)
+                            .bindPopup('<h3><?php echo the_title() ?></h3><?php echo $map_location['address'] ?>');
+                                    
+                            
 
 
                     </script>
                 <!-- End HTMl MAP -->                
-                <div class="acf-map">
+                <div class="acf-map_">
                         <div class="marker"
                             data-lng="<?php echo $map_location['markers'][0]['lng']; ?>"
                             data-lat="<?php echo $map_location['markers'][0]['lat']; ?>"
                         >
-                            <h3><?php the_title(); ?></h3>
-                            <?php echo $map_location['address'] ?>
+                            <h3>Campus: <?php the_title(); ?></h3>
+                            Address: <?php echo $map_location['address'] ?>
                         </div>
                 
                 </div>
+                <!-- Check for related Courses at the Campus -->
+                <?php 
+                    $relatedPrograms = new WP_Query(array(
+                        'posts_per_page' => -1,
+                        'post_type' => 'program',
+                        'orderby' => 'title',
+                        'order' => 'ASC',
+                        'meta_query' => array(
+                            array(
+                                'key' => 'related_campus',
+                                'compare' => 'LIKE',
+                                'value' => '"'.get_the_ID().'"',
+                                ))
+
+                            ));
+                    if($relatedPrograms->have_posts()) {
+                        echo '<hr class="section-break">';
+                        echo '<h2 class="headline headline--medium">Programs available at this Campus</h2>';
+                    }
+
+                    echo'<ul class="min-list link-list">';
+                    while($relatedPrograms->have_posts()) {
+                        $relatedPrograms->the_post(); ?>
+                        <li>
+                            <a href="<?php the_permalink() ?>"><?php the_title() ?></a>
+                        </li>
+                        <?php
+                        echo '</ul>';
+                    }
+
+                        
+
+                ?>
+
+
+             <!-- END Check for related Courses at the Campus -->
             </div>
+            
+             
+
+
         <?php } ?>
         
     <?php
