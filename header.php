@@ -47,7 +47,7 @@
               ) echo 'class="current-menu-item"' 
               ?>
               ><a href="<?php echo get_post_type_archive_link('campus') ?>">Campuses</a></li>
-              <li><a href="#">Campuses</a></li>
+            
               <li <?php if(get_post_type() == 'post') echo 'class="current-menu-item"' ?>><a href="<?php echo site_url('/blog'); ?>">Blog</a></li>
             </ul>
           </nav>

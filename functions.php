@@ -76,7 +76,7 @@ function university_features() {
 // Pass queries for the Events page (archive-event)
 function university_adjust_queries($query) {
   
-
+  // PROGRAMS
   if( // only if not in the backend
     !is_admin() AND 
     // only on the '/programs' page
@@ -88,6 +88,18 @@ function university_adjust_queries($query) {
       $query->set('orderby', 'title');
       $query->set('order', 'ASC');
       $query->set('posts_per_page', -1);
+    }
+
+
+  // CAMPUSES
+  if( // only if not in the backend
+    !is_admin() AND 
+    // only on the '/campuses' page
+    is_post_type_archive('campus') AND
+    // it won't work on Custom Query, only main query (the default URL query)
+    is_main_query()
+    ) {      
+      $query->set('posts_per_page', -1); // all posts
     }
 
   if(

@@ -26,7 +26,7 @@ $map_location = get_field('map_location');
                         }).addTo(map);
 
                     </script>
-    <div class="acf-map">
+    <div class="acf-map_">
         <?php
             while(have_posts()) {
                 the_post();
