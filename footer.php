@@ -69,6 +69,7 @@
       </div>
     </footer>
 
+    <!-- Input SeARCH field -->
     <div class="search-overlay">
       <div class="search-overlay__top">
         <div class="container">
@@ -78,6 +79,7 @@
         </div>
       </div>
     </div>
+    <!-- END Input SeARCH field -->
  
     <?php wp_footer(); ?>
 

@@ -118,8 +118,10 @@ class Search {
     this.openButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".js-search-trigger");
     this.closeButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".search-overlay__close");
     this.searchOverlay = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".search-overlay");
+    this.searchField = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#search-term"); // down in footer
     this.events();
     this.isOverlayOpen = false;
+    this.typingTimer;
   }
 
   // events
@@ -127,6 +129,7 @@ class Search {
     this.openButton.on("click", this.openOverlay.bind(this));
     this.closeButton.on("click", this.closeOverlay.bind(this));
     jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on("keydown", this.keyPressDispatcher.bind(this));
+    this.searchField.on("keydown", this.typingLogic.bind(this));
   }
 
   // methods
@@ -139,6 +142,12 @@ class Search {
     this.searchOverlay.removeClass("search-overlay--active");
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("body").removeClass("body-no-scroll");
     this.isOverlayOpen = false;
+  }
+  typingLogic() {
+    clearTimeout(this.typingTimer);
+    this.typingTimer = setTimeout(function () {
+      console.log("timeout");
+    }, 2000);
   }
   keyPressDispatcher(e) {
     // console.log(e.keyCode);
