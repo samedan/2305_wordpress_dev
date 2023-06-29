@@ -2,12 +2,16 @@ import $ from "jquery";
 
 class Search {
   constructor() {
+    this.resultsDiv = $("#search-overlay__results");
     this.openButton = $(".js-search-trigger");
     this.closeButton = $(".search-overlay__close");
     this.searchOverlay = $(".search-overlay");
     this.searchField = $("#search-term"); // down in footer
     this.events();
     this.isOverlayOpen = false;
+    this.isSpinnerVisible = false;
+    // keeps track of the previous search value
+    this.typingValue;
     this.typingTimer;
   }
 
@@ -33,16 +37,40 @@ class Search {
   }
 
   typingLogic() {
-    clearTimeout(this.typingTimer);
-    this.typingTimer = setTimeout(function () {
-      console.log("timeout");
-    }, 2000);
+    // only if the keystroke changed the search field in some way
+    if (this.searchField.val() != this.previousValue) {
+      clearTimeout(this.typingTimer); // wait 2 seconds before sending input data
+
+      if (this.searchField.val()) {
+        // field has text
+        if (!this.isSpinnerVisible) {
+          // if in the 2 seconds visible delay
+          this.resultsDiv.html('<div class="spinner-loader"></div>');
+          this.isSpinnerVisible = true;
+        }
+        // runs after every key stroke
+        this.previousValue = this.searchField.val();
+      } else {
+        // field is empty, deleted inout
+        this.resultsDiv.html("");
+        this.isSpinnerVisible = false;
+      }
+    }
+    this.typingTimer = setTimeout(this.getResults.bind(this), 2000);
+  }
+
+  getResults() {
+    this.resultsDiv.html("search results");
+    this.isSpinnerVisible = false;
   }
 
   keyPressDispatcher(e) {
     // console.log(e.keyCode);
-    if (e.keyCode == 83 && !this.isOverlayOpen) {
-      // s key
+    if (
+      e.keyCode == 83 && // s key
+      !this.isOverlayOpen &&
+      !$("input, textarea").is(":focus")
+    ) {
       this.openOverlay();
       console.log("ran open");
     }

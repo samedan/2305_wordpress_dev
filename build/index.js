@@ -115,12 +115,16 @@ __webpack_require__.r(__webpack_exports__);
 
 class Search {
   constructor() {
+    this.resultsDiv = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#search-overlay__results");
     this.openButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".js-search-trigger");
     this.closeButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".search-overlay__close");
     this.searchOverlay = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".search-overlay");
     this.searchField = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#search-term"); // down in footer
     this.events();
     this.isOverlayOpen = false;
+    this.isSpinnerVisible = false;
+    // keeps track of the previous search value
+    this.typingValue;
     this.typingTimer;
   }
 
@@ -144,10 +148,22 @@ class Search {
     this.isOverlayOpen = false;
   }
   typingLogic() {
-    clearTimeout(this.typingTimer);
-    this.typingTimer = setTimeout(function () {
-      console.log("timeout");
-    }, 2000);
+    // only if the keystroke changed the search field in some way
+    if (this.searchField.val() != this.previousValue) {
+      clearTimeout(this.typingTimer); // wait 2 seconds before sending input data
+      if (!this.isSpinnerVisible) {
+        // if in the 2 seconds visible delay
+        this.resultsDiv.html('<div class="spinner-loader"></div>');
+        this.isSpinnerVisible = true;
+      }
+      // runs after every key stroke
+      this.previousValue = this.searchField.val();
+    }
+    this.typingTimer = setTimeout(this.getResults.bind(this), 2000);
+  }
+  getResults() {
+    this.resultsDiv.html("search results");
+    this.isSpinnerVisible = false;
   }
   keyPressDispatcher(e) {
     // console.log(e.keyCode);
