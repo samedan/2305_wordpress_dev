@@ -45,12 +45,18 @@ class Search {
 
   getResults() {
     $.getJSON(
-      "http://fictional-university.local/wp-json/wp/v2/posts?search=" +
+      universityData.root_url + // functions.php
+        "/wp-json/wp/v2/posts?search=" +
         this.searchField.val(),
       (posts) => {
         this.resultsDiv.html(`
           <h2 class="search-overlay__section-title">General Information</h2>
-          <ul class="link-list min-list">
+          ${
+            posts.length
+              ? '<ul class="link-list min-list">'
+              : "<p>No general information matches that search</p>"
+          }
+          
             ${posts
               .map(
                 (item) =>
@@ -58,9 +64,10 @@ class Search {
               )
               .join("")}   
           </ul> 
+          ${posts.length ? "</u>" : ""}
         `);
+        this.isSpinnerVisible = false;
       }
-      // <li><a href="${posts[0].link}">${posts[0].title.rendered}</a></li>
     );
   }
 
