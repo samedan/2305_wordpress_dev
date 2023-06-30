@@ -3,6 +3,15 @@
 ///////////////
 // FUNCTIONS
 
+// add info to the REST API
+function university_custom_rest() {
+    register_rest_field('post', 'authorName', array(
+      'get_callback' => function() {
+        return get_the_author();
+      }
+    ));
+}
+
 // Page BANNER
 function pageBanner($args = NULL) { // $args is optional
     if(!isset($args['title'])) { // only if title is not passed
@@ -142,6 +151,8 @@ function university_adjust_queries($query) {
  // pass queries before reading the DBB
  add_action('pre_get_posts', 'university_adjust_queries');
 
+ // add info to the REST API
+ add_action('rest_api_init', 'university_custom_rest');
 
 // wp_enqueue_style('leaflet-map-css', '//unpkg.com/leaflet@1.8.0/dist/leaflet.css');
 // wp_enqueue_script('leaflet-map-js', '//unpkg.com/leaflet@1.8.0/dist/leaflet.js',NULL,'1.8.0', false); 
