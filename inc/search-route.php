@@ -14,7 +14,7 @@ function universityRegisterSearch () {
    )); 
 }
 
-
+// UNIVERSAL Search
 function universitySearchResults($data) {
   $mainQuery = new WP_Query(array(
     'post_type' => array(
@@ -55,6 +55,7 @@ function universitySearchResults($data) {
       array_push($results['programs'], array(
         'title' => get_the_title(),
         'permalink' => get_the_permalink(),
+        'id' => get_the_id() // use teh ID for relationships searches
        ));
     }
     if(get_post_type() == 'campus') {
@@ -81,6 +82,41 @@ function universitySearchResults($data) {
     }
     
   }
+
+  $programsMetaQuery = array();
+
+  // Search based on relationships (Professor has Related program Biology)
+  $programRelationshipQuery = new WP_Query(array(
+    'post_type' => 'professor',
+    'meta_query' => array(
+      array(
+        'key' => 'related_programs', 
+        'compare' => 'LIKE', 
+        'value' => '"'.$results['programs'][0]['id'].'"', // Biology=55
+      )),
+  ));
+
+  // Search based on relationships
+  while($programRelationshipQuery->have_posts()) {
+    $programRelationshipQuery->the_post();
+
+    if(get_post_type() == 'professor') {
+      array_push($results['professors'], array(
+        'title' => get_the_title(),
+        'permalink' => get_the_permalink(),
+        'image' => get_the_post_thumbnail_url(
+          0, // current post
+          'professorLandscape' // size
+        ),
+       ));
+    }
+  }
+
+  // remove duplicates
+  $results['professors'] =
+  array_values( // removes the "id0=" from "0": { "title": "Dr. Barksalot"...
+   array_unique($results['professors'], SORT_REGULAR)
+  );
 
   return $results;
 }
