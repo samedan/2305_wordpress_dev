@@ -24,7 +24,8 @@
               <!-- End Breadcrumbs -->
 
       <div class="generic-content">
-        <?php the_content(); ?>
+        <!--  the_content();  -->
+        <?php the_field('main_body_content'); ?>
       </div>
 
       <!-- Custom query to get the EPROFESSORS that teach PROGRAMS -->
