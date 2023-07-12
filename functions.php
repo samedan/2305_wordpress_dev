@@ -5,6 +5,29 @@ require get_theme_file_path('/inc/search-route.php');
 ///////////////
 // FUNCTIONS
 
+// Load CSS on the Login screen
+function ourLoginCSS() {
+  // load styles.css
+  wp_enqueue_style('university_main_styles', get_theme_file_uri('/build/style-index.css'));
+  wp_enqueue_style('university_extra_styles', get_theme_file_uri('/build/index.css'));
+
+  // load external
+  wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+  wp_enqueue_style('custom-google-fonts', '//fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i|Roboto:100,300,400,400i,700,700i');
+}
+
+// Change Login Screen Text : Powered by Wordpress
+function ourLoginTitle() {
+  return get_bloginfo('name');
+}
+
+
+// Customize Login Screen
+function ourHeaderUrl() {
+  // changes link to wordpress.com on the Login page
+  return esc_url(site_url('/'));
+}
+
 // Redirect subscribers to Frontpage
 function redirectSubsToFrontend() {
   $ourCurrentUser = wp_get_current_user();
@@ -187,5 +210,12 @@ function university_adjust_queries($query) {
 
 // redirect subscriber account out of admin and onto homepage
 add_action('admin_init', 'redirectSubsToFrontend');
-// Hidea dmin bar for subscriber
+// Hide admin bar for subscriber
 add_action('wp_loaded', 'noSubsAdminBar');
+
+// Customize Login Screen
+add_filter('login_headerurl', 'ourHeaderUrl');
+// Change Login Screen Text : Powered by Wordpress
+add_filter('login_headertitle', 'ourLoginTitle');
+// Load CSS on the Login screen
+add_action('login_enqueue_scripts', 'ourLoginCSS');
