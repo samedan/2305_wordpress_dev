@@ -5,6 +5,31 @@ require get_theme_file_path('/inc/search-route.php');
 ///////////////
 // FUNCTIONS
 
+// Redirect subscribers to Frontpage
+function redirectSubsToFrontend() {
+  $ourCurrentUser = wp_get_current_user();
+  if(
+    count($ourCurrentUser->roles) == 1 // single Role  
+    AND
+    $ourCurrentUser->roles[0] == 'subscriber'
+    ) {
+      wp_redirect(site_url('/'));
+      exit; // after redirect, stop
+  }
+}
+
+// Hide admin bar for subscribers
+function noSubsAdminBar() {
+  $ourCurrentUser = wp_get_current_user();
+  if(
+    count($ourCurrentUser->roles) == 1 // single Role  
+    AND
+    $ourCurrentUser->roles[0] == 'subscriber'
+    ) {
+      show_admin_bar(false);
+  }
+}
+
 // add info to the REST API
 function university_custom_rest() {
     register_rest_field('post', 'authorName', array(
@@ -158,3 +183,9 @@ function university_adjust_queries($query) {
 
 // wp_enqueue_style('leaflet-map-css', '//unpkg.com/leaflet@1.8.0/dist/leaflet.css');
 // wp_enqueue_script('leaflet-map-js', '//unpkg.com/leaflet@1.8.0/dist/leaflet.js',NULL,'1.8.0', false); 
+
+
+// redirect subscriber account out of admin and onto homepage
+add_action('admin_init', 'redirectSubsToFrontend');
+// Hidea dmin bar for subscriber
+add_action('wp_loaded', 'noSubsAdminBar');
