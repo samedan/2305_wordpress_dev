@@ -95,6 +95,14 @@ function pageBanner($args = NULL) { // $args is optional
     <?php 
 }
 
+// Force Note posts to be Private
+function makeNotePrivate($data) {
+    if($data['post_type'] == 'note' AND $data['post_status'] != 'trash'){
+      $data['post_status'] = "private";
+    } 
+    return $data;
+}
+
 // Add files
  function university_files() {
    // load Javascript
@@ -221,3 +229,6 @@ add_filter('login_headerurl', 'ourHeaderUrl');
 add_filter('login_headertitle', 'ourLoginTitle');
 // Load CSS on the Login screen
 add_action('login_enqueue_scripts', 'ourLoginCSS');
+
+// Force Note posts to be Private
+add_filter('wp_insert_post_data', 'makeNotePrivate');
