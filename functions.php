@@ -110,6 +110,8 @@ function pageBanner($args = NULL) { // $args is optional
    // load website URL
    wp_localize_script('main-university-js', 'universityData', array(
     'root_url' => get_site_url(),
+    // creates a secret 'nonce' property that randomly creates a nr for the session
+    'nonce' => wp_create_nonce('wp_rest')
    ));
  }
 

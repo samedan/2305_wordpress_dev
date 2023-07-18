@@ -67,7 +67,6 @@ function university_post_types() {
     'show_in_rest' => true,
     'supports' => array('title', 'editor', 'thumbnail'),
     'public' => true,
-    'show_in_rest' => true,
     'labels' => array(
       'name' => 'Professors',
       'add_new_item' => 'Add New Professor',
@@ -76,6 +75,21 @@ function university_post_types() {
       'singular_name' => 'Professor',
     ),
     'menu_icon' => 'dashicons-welcome-learn-more'
+  ));
+  // create NOTE Custom type
+  register_post_type('note', array(
+    'show_in_rest' => true,
+    'supports' => array('title', 'editor'),
+    'public' => false,// NOT show, including Admin
+    'show_ui' => true,// show in the Admin
+    'labels' => array(
+      'name' => 'Notes',
+      'add_new_item' => 'Add New Note',
+      'edit_item' => 'Edit Note',
+      'all_items' => 'All Notes',
+      'singular_name' => 'Note',
+    ),
+    'menu_icon' => 'dashicons-welcome-write-blog'
   ));
 }
 
