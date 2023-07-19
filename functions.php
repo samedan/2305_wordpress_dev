@@ -60,6 +60,11 @@ function university_custom_rest() {
         return get_the_author();
       }
     ));
+    register_rest_field('note', 'userNoteCount', array(
+      'get_callback' => function() {
+        return count_user_posts(get_current_user_id(), 'note');
+      }
+    ));
 }
 
 // Page BANNER
@@ -96,15 +101,24 @@ function pageBanner($args = NULL) { // $args is optional
 }
 
 // Force Note posts to be Private
-function makeNotePrivate($data) {
+function makeNotePrivate($data, $postarr) { 
+    // Sanitize post content
+    if($data['post_type'] == 'note'){
+      if(count_user_posts(
+          get_current_user_id(),
+          'note' // type of post
+        )>4  AND 
+          // Not true when Updating a post ($postarr) = Post has an ID
+          !$postarr['ID']
+        ) {
+          die("You have reached your note limit.");
+      }
+      $data['post_content'] = sanitize_textarea_field($data['post_content']);
+    }
     if($data['post_type'] == 'note' AND $data['post_status'] != 'trash'){
       $data['post_status'] = "private";
       $data['post_title'] = sanitize_text_field($data['post_title']);
     } 
-    // Sanitize post content
-    if($data['post_type'] == 'note'){
-      $data['post_content'] = sanitize_textarea_field($data['post_content']);
-    }
     return $data;
 }
 
@@ -236,4 +250,7 @@ add_filter('login_headertitle', 'ourLoginTitle');
 add_action('login_enqueue_scripts', 'ourLoginCSS');
 
 // Force Note posts to be Private
-add_filter('wp_insert_post_data', 'makeNotePrivate');
+add_filter('wp_insert_post_data', 'makeNotePrivate', 
+    10, //priority of a callback function
+    2 // work with 2 parameters -> makeNotePrivate($data, $postarr)
+  );

@@ -21,6 +21,7 @@
           <input class="new-note-title" placeholder="Title">
           <textarea class="new-note-body" placeholder="Your Note Here..."></textarea>
           <span class="submit-note">Create Note</span>
+          <span class="note-limit-message">Note limit reached: Delete an existing Note to make room for a a new one.</span>
         </div>
        <ul class="min-list link-list" id="my-notes">
          <?php 
