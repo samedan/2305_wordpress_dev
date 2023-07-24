@@ -50,6 +50,8 @@
             }
             
           ?>
+          
+          <span class="note-limit-message">Only logged in users can create a like.<br/><br/></span>
           <span class="like-box" data-like="<?php if (isset($existQuery->posts[0])) echo $existQuery->posts[0]->ID;; ?>" data-professor="<?php the_ID() ?>" data-exists="<?php echo $existStatus ?>">
             <i class="fa fa-heart-o" aria-hidden="true"></i>
             <i class="fa fa-heart" aria-hidden="true"></i>
@@ -59,7 +61,9 @@
               ?>
             </span>
           </span>
+          
           <?php the_content(); ?>
+
          </div>
 
         </div>
