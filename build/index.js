@@ -2156,7 +2156,8 @@ class Like {
   ourClickDispather(e) {
     // A specific target to click the HTML element around the Heart (the box)
     var currentLikeBox = jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).closest(".like-box");
-    if (currentLikeBox.data("exists") == "yes") {
+    if (currentLikeBox.attr("data-exists") == "yes") {
+      // fresh values
       // if already liked
       this.deleteLike(currentLikeBox);
     } else {
@@ -2164,6 +2165,7 @@ class Like {
     }
   }
   createLike(currentLikeBox) {
+    // currentLikeBox is the parent span element of teh heart
     jquery__WEBPACK_IMPORTED_MODULE_0___default().ajax({
       beforeSend: xhr => {
         // NONCE
@@ -2175,6 +2177,13 @@ class Like {
         professorId: currentLikeBox.data("professor")
       },
       success: response => {
+        currentLikeBox.attr("data-exists", "yes"); // fill the heart
+        var likeCount = parseInt(currentLikeBox.find(".like-count").html(),
+        // fetch the number next to heart
+        10); // base 10 number
+        likeCount++;
+        currentLikeBox.find(".like-count").html(likeCount);
+        currentLikeBox.attr("data-like", response); // response is the id of the like
         console.log(response);
       },
       error: response => {
@@ -2182,11 +2191,25 @@ class Like {
       }
     });
   }
-  deleteLike() {
+  deleteLike(currentLikeBox) {
     jquery__WEBPACK_IMPORTED_MODULE_0___default().ajax({
+      beforeSend: xhr => {
+        // NONCE
+        xhr.setRequestHeader("X-WP-Nonce", universityData.nonce);
+      },
       url: universityData.root_url + "/wp-json/university/v1/manageLike",
+      data: {
+        like: currentLikeBox.attr("data-like")
+      },
       type: "DELETE",
       success: response => {
+        currentLikeBox.attr("data-exists", "no"); // fill the heart
+        var likeCount = parseInt(currentLikeBox.find(".like-count").html(),
+        // fetch the number next to heart
+        10); // base 10 number
+        likeCount--;
+        currentLikeBox.find(".like-count").html(likeCount);
+        currentLikeBox.attr("data-like", ""); // response is the id of the like
         console.log(response);
       },
       error: response => {
