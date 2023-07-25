@@ -6,6 +6,12 @@ require get_theme_file_path('/inc/like-route.php');
 ///////////////
 // FUNCTIONS
 
+// Exclude node_modules
+function ignoreCertainFiles($exclude_filters) {
+  $exclude_filters[] = 'themes/fictional-university-theme/node_modules';
+  return $exclude_filters;
+}
+
 // Load CSS on the Login screen
 function ourLoginCSS() {
   // load styles.css
@@ -255,3 +261,6 @@ add_filter('wp_insert_post_data', 'makeNotePrivate',
     10, //priority of a callback function
     2 // work with 2 parameters -> makeNotePrivate($data, $postarr)
   );
+
+// Exclude node_modules
+add_filter('ai1wm_exclude_content_from_export', 'ignoreCertainFiles');
